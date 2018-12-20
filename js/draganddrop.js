@@ -1,6 +1,5 @@
 'use strict';
 
-// drag & drop
 function dragStart(event) {
     if (!event.target.classList.contains('drag')) {
         return;
@@ -38,7 +37,6 @@ function drop(event) {
     }
 }
 
-// ограничения частоты запуска функции
 function throttle(func, delay = 0) {
     let isWaiting = false;
 
@@ -53,7 +51,6 @@ function throttle(func, delay = 0) {
     }
 }
 
-// отложенный запуск функции, после завершения события
 function debounce(func, delay = 0) {
     let timeout;
 
