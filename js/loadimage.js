@@ -1,6 +1,5 @@
 'use strict';
 
-// Загрузка изображения
 function uploadFileFromInput(event) {
     hideItem(errorNode);
     const input = document.createElement('input');
@@ -24,13 +23,11 @@ function uploadFileFromInput(event) {
     menu.removeChild(input);
 }
 
-// drag & drop Image
 function onFilesDrop(event) {
     event.preventDefault();
     hideItem(errorNode);
     const files = Array.from(event.dataTransfer.files);
 
-    //выдаем ошибку, при повторном drop изображении
     if (currentImage.dataset.load === 'load') {
         showItem(errorNode);
         errorNode.lastElementChild.textContent = 'Чтобы загрузить новое изображение, пожалуйста, воспользуйтесь пунктом "Загрузить новое" в меню';
@@ -38,7 +35,6 @@ function onFilesDrop(event) {
         return;
     }
 
-    //проверяем загружаемый файл, если файл нужного типа, то загружаем, иначе показываем ошибку.
     files.forEach(file => {
         if ((file.type === 'image/jpeg') || (file.type === 'image/png')) {
             sendFile(files);
@@ -48,7 +44,6 @@ function onFilesDrop(event) {
     });
 }
 
-// загрузка изображения на сервер
 function sendFile(files) {
     const formData = new FormData();
 
@@ -81,7 +76,6 @@ function sendFile(files) {
         });
 }
 
-// удаление форм комментариев, при загрузке нового изображения
 function removeForm() {
     const formComment = wrap.querySelectorAll('.comments__form');
     Array.from(formComment).forEach(item => {
@@ -89,7 +83,6 @@ function removeForm() {
     });
 }
 
-// получаем информацию о файле
 function getImageData(id) {
     const xhrGetInfo = new XMLHttpRequest();
     xhrGetInfo.open(
@@ -105,8 +98,7 @@ function getImageData(id) {
     wss();
     setcurrentImage(dataGetParse);
     burger.style.cssText = ``;
-    //showMenu();
-    history.pushState(null, null, curHost); // querystring для сохранения данных об изображении
+    history.pushState(null, null, curHost);
     showMenuShare();
     currentImage.addEventListener('load', () => {
         hideItem(imageLoader);
@@ -116,18 +108,14 @@ function getImageData(id) {
         updateCommentForm(dataGetParse.comments);
         minimizeAllCommentForms();
     });
-
-    // updateCommentForm(dataGetParse.comments);
 }
 
-// убираем расширение файла
 function delExtension(inputText) {
     let regExp = new RegExp(/\.[^.]+$/gi);
 
     return inputText.replace(regExp, '');
 }
 
-// показываем меню "Поделиться"
 function showMenuShare() {
     console.log('showMenuShare')
     menu.dataset.state = 'default';
