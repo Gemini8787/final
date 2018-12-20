@@ -1,15 +1,12 @@
 'use strict';
 
 const urlApi = 'https://neto-api.herokuapp.com';
-
 const wrapCommentsCanvas = document.createElement('div');
 const canvas = document.createElement('canvas');
-
 
 const wrap = document.querySelector('.wrap');
 const currentImage = document.querySelector('.current-image');
 
-// меню
 const menu = document.querySelector('.menu');
 const burger = document.querySelector('.burger');
 const comments = document.querySelector('.comments');
@@ -19,21 +16,17 @@ const menuUrl = document.querySelector('.menu__url');
 const modeHTMLElements = document.querySelectorAll('.mode');
 const copyButton = document.querySelector('.menu_copy');
 
-//сервис
 const imageLoader = document.querySelector('.image-loader');
 const errorMessage = document.querySelector('.error__message');
 const errorNode = document.querySelector('.error');
 
-// комментарии 
 const allCommentsForms = document.querySelectorAll('.comments__marker');
 
-// рисование
 const ctx = canvas.getContext('2d');
-const BRUSH_RADIUS = 4; //размер кисти
+const BRUSH_RADIUS = 4; 
 let curves = [];
 let drawing = false;
 let needsRepaint = false;
-
 
 let connection;
 let dataGetParse;
@@ -53,9 +46,7 @@ document.addEventListener('mousedown', dragStart);
 document.addEventListener('mousemove', throttle(drag));
 document.addEventListener('mouseup', drop);
 
-
-// init
-currentImage.src = ''; // фон пустой
+currentImage.src = '';
 
 menu.dataset.state = 'initial';
 wrap.dataset.state = '';
@@ -69,14 +60,12 @@ wrap.addEventListener('dragover', event => event.preventDefault());
 burger.addEventListener('click', showMenu);
 canvas.addEventListener('click', checkComment);
 
-// переключатель видимости комментария
 document.querySelector('.menu__toggle-title_on').addEventListener('click', markerCheckboxOn);
 document.querySelector('#comments-on').addEventListener('click', markerCheckboxOn);
 
 document.querySelector('.menu__toggle-title_off').addEventListener('click', markerCheckboxOff);
 document.querySelector('#comments-off').addEventListener('click', markerCheckboxOff);
 
-// копирование ссылки Поделиться
 copyButton.addEventListener('click', () => {
     menuUrl.select();
     document.execCommand('copy');
@@ -84,7 +73,6 @@ copyButton.addEventListener('click', () => {
 
 urlId(paramId);
 
-// canvas
 canvas.addEventListener("mousedown", (event) => {
     if (!(menu.querySelector('.draw').dataset.state === 'selected')) return;
     drawing = true;
@@ -115,8 +103,6 @@ canvas.addEventListener("mousemove", (event) => {
     }
 });
 
-
-// выбор цвета пера
 Array.from(menu.querySelectorAll('.menu__color')).forEach(color => {
     if (color.checked) {
         currentColor = getComputedStyle(color.nextElementSibling).backgroundColor;
@@ -128,7 +114,6 @@ Array.from(menu.querySelectorAll('.menu__color')).forEach(color => {
 
 tick();
 
-// раскрытие пунктов меню
 function showMenu() {
     menu.dataset.state = 'default';
     Array.from(menu.querySelectorAll('.mode')).forEach(modeItem => {
@@ -143,24 +128,20 @@ function showMenu() {
     })
 }
 
-// скрываем текст ошибки
 function errorRemove() {
     setTimeout(function () {
         hideItem(errorNode)
     }, 5000);
 }
 
-// скрываем элементы
 function hideItem(el) {
     el.style.display = 'none';
 }
 
-// показываем элементы
 function showItem(el) {
     el.style.display = '';
 }
 
-// проверяем ссылку на параметр id
 function urlId(id) {
     if (!id) {
         return;
@@ -172,7 +153,6 @@ function urlId(id) {
 
 function tick() {
     if (menu.offsetHeight > 66) {
-        //menu.style.left = (wrap.offsetWidth - menu.offsetWidth) - 10 + 'px';
         menu.style.left = (wrap.offsetWidth - menu.offsetWidth) - 1 + 'px';
     }
 
