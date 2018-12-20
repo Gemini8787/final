@@ -1,9 +1,7 @@
 'use strict';
 
-
 const debounceSendMask = debounce(sendMaskState, 1000);
-
-//создаем холст для рисования	
+	
 function createCanvas() {
     const width = getComputedStyle(wrap.querySelector('.current-image')).width.slice(0, -2);
     const height = getComputedStyle(wrap.querySelector('.current-image')).height.slice(0, -2);
@@ -21,20 +19,17 @@ function createCanvas() {
     wrapCommentsCanvas.appendChild(canvas);
 }
 
-// кисть
 function circle(point) {
     ctx.beginPath();
     ctx.arc(...point, BRUSH_RADIUS / 2, 0, 2 * Math.PI);
     ctx.fill();
 }
 
-// плавная кривая между точками
 function smoothCurveBetween(p1, p2) {
     const cp = p1.map((coord, idx) => (coord + p2[idx]) / 2);
     ctx.quadraticCurveTo(...p1, ...cp);
 }
 
-// рисуем линию
 function smoothCurve(points) {
     ctx.beginPath();
     ctx.lineWidth = BRUSH_RADIUS;
@@ -50,12 +45,10 @@ function smoothCurve(points) {
     ctx.stroke();
 }
 
-// координаты положения курсора
 function makePoint(x, y) {
     return [x, y];
 }
 
-// перерисовка canvas
 function repaint() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     curves.forEach((curve) => {
@@ -68,7 +61,6 @@ function repaint() {
     });
 };
 
-// отправка канвас на сервер
 function sendMaskState() {
     canvas.toBlob(function (blob) {
         connection.send(blob);
